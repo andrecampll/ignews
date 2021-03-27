@@ -1,4 +1,5 @@
 import styles from './styles.module.scss';
+import { Button } from '../Button';
 
 export function Header() {
   return (
@@ -9,6 +10,8 @@ export function Header() {
           <a href="" className={styles.active}>Home</a>
           <a href="">Posts</a>
         </nav>
+
+        <Button />
       </div>
     </header>
   );
