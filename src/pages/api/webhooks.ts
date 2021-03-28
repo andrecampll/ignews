@@ -63,7 +63,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             break;
 
           case 'checkout.session.completed':
-
             const checkoutSession = event.data.object as Stripe.Checkout.Session;
 
             await saveSubscription(
