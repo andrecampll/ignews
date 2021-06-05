@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import { RichText } from "prismic-dom";
 import { getPrismicClient } from "../../../services/prismic";
 import styles from '../post.module.scss';
-import { Session } from "next-auth";
 import Link from "next/link";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
