@@ -7,11 +7,10 @@ jest.mock('../../services/prismic');
 
 const posts = [
   {
-    slug:
-    'my-post',
+    slug: 'my-post',
     title: 'My Post',
     excerpt: 'Post excerpt',
-    updatedAt:'4th April',
+    updatedAt: '4th April',
   },
 ];
 
