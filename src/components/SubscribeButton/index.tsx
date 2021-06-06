@@ -33,7 +33,7 @@ export function SubscribeButton() {
         sessionId,
       });
     } catch(err) {
-      alert(err.message);
+      console.log(err.message);
     }
   }, [session, signIn]);
 

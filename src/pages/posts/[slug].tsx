@@ -13,11 +13,7 @@ type PostPageProps = {
     content: string;
     updatedAt: string;
   }
-}
-
-type SessionProps = {
-  activeSubscription?: object;
-} & Session;
+};
 
 export default function Post({ post }: PostPageProps) {
   return (
