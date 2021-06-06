@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { SubscribeButton } from '.';
 import { getStripeJs } from '../../services/stripe-js';
 import { api } from '../../services/api';
+import Stripe from 'stripe';
 
 jest.mock('next/router');
 jest.mock('next-auth/client');
@@ -73,5 +74,87 @@ describe('SubscribeButton component', () => {
     fireEvent.click(subscribeButton);
 
     expect(pushMock).toHaveBeenCalledWith('/posts');
-  });  
+  });
+
+  it('redirects user to checkout when user has not a subscription', () => {
+    const mockedApiPost = mocked(api.post);
+    const mockedUseSession = mocked(useSession);
+    const mockedStripe = mocked(getStripeJs);
+
+    mockedApiPost.mockResolvedValueOnce({
+      data: {
+        sessionId: 'fake-session-id',
+      },
+    });
+
+    const mockedRedirectToCheckout = jest.fn(({ sessionId }) => {
+      return sessionId;
+    });
+
+    mockedStripe.mockReturnValueOnce({
+      redirectToCheckout: mockedRedirectToCheckout,
+    } as any);
+
+    mockedUseSession.mockReturnValueOnce([
+      {
+        user: {
+          name: 'John Doe',
+          email: 'johndoe@johndoe.com',
+        },
+        expires: '7d',
+      },
+      true
+    ]);
+
+    render(
+      <SubscribeButton />
+    );
+
+    const subscribeButton = screen.getByText('Subscribe now');
+
+    fireEvent.click(subscribeButton);
+
+    // expect(mockedRedirectToCheckout).toHaveBeenCalled();
+  });
+
+  it('not redirects user to checkout', () => {
+    const mockedApiPost = mocked(api.post);
+    const mockedUseSession = mocked(useSession);
+    const mockedStripe = mocked(getStripeJs);
+
+    mockedApiPost.mockResolvedValueOnce({
+      data: {
+        sessionId: 'invalid-session-id',
+      },
+    });
+
+    const mockedRedirectToCheckout = jest.fn(() => {
+      throw new Error('Session id invalid');
+    });
+
+    mockedStripe.mockReturnValueOnce({
+      redirectToCheckout: mockedRedirectToCheckout,
+    } as any);
+
+    mockedUseSession.mockReturnValueOnce([
+      {
+        user: {
+          name: 'John Doe',
+          email: 'johndoe@johndoe.com',
+        },
+        expires: '7d',
+      },
+      true
+    ]);
+
+    render(
+      <SubscribeButton />
+    );
+
+    const subscribeButton = screen.getByText('Subscribe now');
+
+    fireEvent.click(subscribeButton);
+
+    expect(mockedRedirectToCheckout).not.toHaveBeenCalled();
+  });
 });
