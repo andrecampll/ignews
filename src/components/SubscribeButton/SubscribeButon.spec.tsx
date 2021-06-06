@@ -3,9 +3,13 @@ import { mocked } from 'ts-jest/utils';
 import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { SubscribeButton } from '.';
+import { getStripeJs } from '../../services/stripe-js';
+import { api } from '../../services/api';
 
-jest.mock('next-auth/client');
 jest.mock('next/router');
+jest.mock('next-auth/client');
+jest.mock('../../services/api');
+jest.mock('../../services/stripe-js');
 
 describe('SubscribeButton component', () => {
   it('should render correctly', () => {
@@ -69,5 +73,5 @@ describe('SubscribeButton component', () => {
     fireEvent.click(subscribeButton);
 
     expect(pushMock).toHaveBeenCalledWith('/posts');
-  });
+  });  
 });

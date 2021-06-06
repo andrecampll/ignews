@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { mocked } from 'ts-jest/utils';
-import Post, { getStaticProps } from '../../pages/posts/preview/[slug]';
+import Post, { getStaticProps, getStaticPaths } from '../../pages/posts/preview/[slug]';
 import { getPrismicClient } from '../../services/prismic'
 
 jest.mock('../../services/prismic');
@@ -74,6 +74,8 @@ describe('Posts preview page', () => {
         last_publication_date: '04-04-2021',
       }),
     } as any);
+
+    await getStaticPaths();
 
     const response = await getStaticProps({
       params: {
